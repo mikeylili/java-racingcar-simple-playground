@@ -1,4 +1,4 @@
-package CarRace;
+package domain;
 
 
 import org.junit.jupiter.api.DisplayName;
