@@ -2,26 +2,35 @@ package domain;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 public class CarRace {
 
     public int generateRandom0to9() {
         return (int) (Math.random() * 10);
     }
 
-    public int goOrStop(int move) {
-        if (move <= 0 || move > 9) throw new RuntimeException("move 값이 적절한 범위를 벗어남.");
-        if (move >= 4) return 1;
-        if (move <= 3) return 0;
-        throw new RuntimeException("move 값이 적절하지 않음.");
+    public void checkMove(int move) {
+        if (move < 0 || move > 9) {
+            throw new RuntimeException("move 값이 적절한 범위를 벗어남.");
+        }
+    }
+
+    public int determineMoveDistance(int move) {
+        if (move >= 4) {
+            return 1;
+        }
+        return 0;
     }
 
     public void playRound(int[] carscores) {
         for (int i = 0; i < carscores.length; i++) {
-            carscores[i] += goOrStop(generateRandom0to9());
+            int move = generateRandom0to9();
+            checkMove(move);
+            carscores[i] += determineMoveDistance(move);
         }
     }
 
-    public String getWinner(int[] carscores, String[] carnames) {
+    public String getWinners(int[] carscores, String[] carnames) {
         int maxScore = IntStream.of(carscores).max().orElse(0);
         return IntStream.range(0, carscores.length)
                 .filter(i -> carscores[i] == maxScore)
@@ -44,8 +53,6 @@ public class CarRace {
             }
         }
     }
-
-
 
 
 }
